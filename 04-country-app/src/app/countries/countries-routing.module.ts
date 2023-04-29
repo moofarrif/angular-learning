@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes, RouterModule } from '@angular/router';
 
-import { ByCapitalPageComponent } from './pages/by-capital-pages/by-capital-pages.component';
-import { ByCountryPageComponent } from './pages/by-country-pages/by-country-pages.component';
-import { ByRegionPageComponent } from './pages/by-region-pages/by-region-pages.component';
-import { CountryPageComponent } from './pages/country-pages/country-pages.component';
+import { ByCapitalPageComponent } from './pages/by-capital-page/by-capital-page.component';
+import { ByCountryPageComponent } from './pages/by-country-page/by-country-page.component';
+import { ByRegionPageComponent } from './pages/by-region-page/by-region-page.component';
+import { CountryPageComponent } from './pages/country-page/country-page.component';
 
 const routes: Routes = [
   {
@@ -25,11 +25,18 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'by-capital',
-  },
-];
+    redirectTo: 'by-capital'
+  }
+
+]
+
+
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  imports: [
+    RouterModule.forChild( routes )
+  ],
+  exports: [
+    RouterModule
+  ],
 })
-export class CountriesRoutingModule {}
+export class CountriesRoutingModule { }
