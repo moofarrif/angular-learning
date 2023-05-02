@@ -3,6 +3,7 @@ import { BasicsPagesComponent } from './pages/basics-pages/basics-pages.componen
 import { NumberPagesComponent } from './pages/number-pages/number-pages.component';
 import { RouterModule, Routes } from '@angular/router';
 import { UncommonPagesComponent } from './pages/uncommon-pages/uncommon-pages.component';
+import { OrderComponent } from './pages/order-pages/order.component';
 
 const routes: Routes = [
   {
@@ -16,6 +17,10 @@ const routes: Routes = [
   {
     path: 'uncommon',
     component: UncommonPagesComponent,
+  },
+  {
+    path: 'custom',
+    component: OrderComponent,
   },
   {
     path: '**',
