@@ -1,0 +1,17 @@
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.status-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  white-space: nowrap;
+  display: flex;
+  justify-content: space-between;
+}
+
+.break-line {
+  white-space: pre-line;
+}
