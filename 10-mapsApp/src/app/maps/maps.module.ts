@@ -9,7 +9,10 @@ import { FullScreenPageComponent } from './page/full-screen-page/full-screen-pag
 import { MarkersPageComponent } from './page/markers-page/markers-page.component';
 import { PropertiesPageComponent } from './page/properties-page/properties-page.component';
 import { ZoomPageComponent } from './page/zoom-page/zoom-page.component';
+import * as mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-gl');"
 
+(mapboxgl as any).accessToken =
+  'pk.eyJ1IjoibW9vZmFycmlmIiwiYSI6ImNsbGQxemJycDA2ZTczZ255Y2s0cmdrYW0ifQ.LvwfobEj6A3qLECqnoJ8bg';
 
 @NgModule({
   declarations: [
@@ -19,11 +22,8 @@ import { ZoomPageComponent } from './page/zoom-page/zoom-page.component';
     FullScreenPageComponent,
     MarkersPageComponent,
     PropertiesPageComponent,
-    ZoomPageComponent
+    ZoomPageComponent,
   ],
-  imports: [
-    CommonModule,
-    MapsRoutingModule
-  ]
+  imports: [CommonModule, MapsRoutingModule],
 })
-export class MapsModule { }
+export class MapsModule {}
