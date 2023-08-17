@@ -23,6 +23,7 @@ import * as mapboxgl from 'mapbox-gl'; // or "const mapboxgl = require('mapbox-g
     MarkersPageComponent,
     PropertiesPageComponent,
     ZoomPageComponent,
+    MiniMapComponent,
   ],
   imports: [CommonModule, MapsRoutingModule],
 })
