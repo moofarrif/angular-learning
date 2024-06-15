@@ -1,7 +1,8 @@
-import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core';
-import { environment } from '../../../environments/environments';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, map, of, throwError } from 'rxjs';
+import { environment } from '../../../environments/environments';
+import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
+
 import {
   AuthStatus,
   CheckTokenResponse,
@@ -13,17 +14,18 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly BASE_URL = environment.BASE_URL;
+  private readonly baseUrl: string = environment.BASE_URL;
   private http = inject(HttpClient);
 
   private _currentUser = signal<User | null>(null);
   private _authStatus = signal<AuthStatus>(AuthStatus.checking);
 
+  //! Al mundo exterior
   public currentUser = computed(() => this._currentUser());
   public authStatus = computed(() => this._authStatus());
 
-  constructor() {    
-    //  this.checkAuthStatus().subscribe();
+  constructor() {
+    this.checkAuthStatus().subscribe();
   }
 
   private setAuthentication(user: User, token: string): boolean {
@@ -35,39 +37,38 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<boolean> {
-    const URL = `${this.BASE_URL}/auth/login`;
-
+    const url = `${this.baseUrl}/auth/login`;
     const body = { email, password };
 
-    return this.http.post<LoginResponse>(URL, body).pipe(
+    return this.http.post<LoginResponse>(url, body).pipe(
       map(({ user, token }) => this.setAuthentication(user, token)),
-      catchError(({ error }) => throwError(() => error.message))
+      catchError((err) => throwError(() => err.error.message))
     );
   }
 
   checkAuthStatus(): Observable<boolean> {
-    const URL = `${this.BASE_URL}/auth/check-auth`;
-    const TOKEN = localStorage.getItem('token');
+    const url = `${this.baseUrl}/auth/check-token`;
+    const token = localStorage.getItem('token');
 
-    if (!TOKEN)  {
+    if (!token) {
       this.logout();
-      return of(false)
+      return of(false);
     }
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${TOKEN}`);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<CheckTokenResponse>(URL, { headers }).pipe(
+    return this.http.get<CheckTokenResponse>(url, { headers }).pipe(
       map(({ user, token }) => this.setAuthentication(user, token)),
       catchError(() => {
-        // this._authStatus.set(AuthStatus.notAuthenticated);
+        this._authStatus.set(AuthStatus.notAuthenticated);
         return of(false);
       })
     );
   }
 
-  logout(): void {
+  logout() {
+    localStorage.removeItem('token');
     this._currentUser.set(null);
     this._authStatus.set(AuthStatus.notAuthenticated);
-    localStorage.removeItem('token');
   }
 }
