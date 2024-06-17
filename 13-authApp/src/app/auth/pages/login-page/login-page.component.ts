@@ -11,7 +11,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.css'],
 })
 export class LoginPageComponent {
-
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -25,7 +24,7 @@ export class LoginPageComponent {
     const { email, password } = this.myForm.value;
     this.authService.login(email, password).subscribe({
       next: () => this.router.navigateByUrl('/dashboard'),
-      error: (message) => Swal.fire('Error', message, 'error'),
+      error: (message: string) => Swal.fire('Error', message, 'error'),
     });
   }
 }
